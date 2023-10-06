@@ -1,6 +1,5 @@
 ﻿using MovieTicketer.Persistence.Entities;
 using MovieTicketer.Persistence.Wrappers;
-using System.Collections.Generic;
 
 namespace MovieTicketer.Services;
 
@@ -74,4 +73,6 @@ public class MovieShowService : IMovieTicketerService<MovieShow>
   {
     _context.RemoveRange(roomMovieShows.Where(ms => ms.StartTime < _dateTimeOffsetWrapper.UtcNow));
   }
+
+
 }

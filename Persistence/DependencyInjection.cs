@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using MovieTicketer.Persistence.Entities;
 using MovieTicketer.Persistence.Interceptors;
 using MovieTicketer.Persistence.Wrappers;
+using System.Reflection;
 
 namespace MovieTicketer.Persistence;
-
 
 public static class DependencyInjection
 {
@@ -17,6 +18,8 @@ public static class DependencyInjection
     services.ConfigurePersistence(configuration);
 
     services.AddWrappers();
+
+    services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
     return services;
   }

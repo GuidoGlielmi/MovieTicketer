@@ -24,11 +24,6 @@ public class TicketService : IMovieTicketerService<Ticket>
 
   public void Create(Ticket ticket)
   {
-    var movieShowTicketsCount = _context.Tickets.Count(t => t.MovieShowId == ticket.MovieShowId);
-    if (movieShowTicketsCount >= ticket.MovieShow.Room.SeatsAmount)
-    {
-      throw new Exception("No tickets available");
-    }
     _context.Tickets.Add(ticket);
     _context.SaveChanges();
   }

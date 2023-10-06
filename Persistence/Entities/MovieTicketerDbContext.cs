@@ -14,10 +14,9 @@ public class MovieTicketerDbContext : DbContext, IMovieTicketerDbContext
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
     modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
     base.OnModelCreating(modelBuilder);
   }
-  public required DbSet<Movie> Categories { get; set; }
+
   public required DbSet<Room> Rooms { get; set; }
   public required DbSet<MovieShow> MovieShows { get; set; }
   public required DbSet<Movie> Movies { get; set; }

@@ -1,4 +1,6 @@
-﻿namespace MovieTicketer.Persistence.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace MovieTicketer.Persistence.Entities;
 
 public class Room : Entity
 {
@@ -6,5 +8,10 @@ public class Room : Entity
 
   public List<MovieShow> MovieShows { get; } = new();
 
-  public int SeatsAmount { get; init; }
+  public int RowsAmount { get; init; }
+
+  public int ColumnsAmount { get; init; }
+
+  [NotMapped]
+  public int SeatsAmount => RowsAmount * ColumnsAmount;
 }
