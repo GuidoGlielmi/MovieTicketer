@@ -9,9 +9,9 @@ public class TicketController : ControllerBase
 {
 
   private readonly ILogger<TicketController> _logger;
-  private readonly TicketService _service;
+  private readonly IMovieTicketerService<Ticket> _service;
 
-  public TicketController(ILogger<TicketController> logger, TicketService service)
+  public TicketController(ILogger<TicketController> logger, IMovieTicketerService<Ticket> service)
   {
     _logger = logger;
     _service = service;
@@ -26,27 +26,39 @@ public class TicketController : ControllerBase
   [HttpGet("{id}")]
   public ActionResult<Ticket?> GetOne([FromRoute] Guid id)
   {
-    return _service.Get(id);
+    var ticket = _service.Get(id);
+    return ticket is null ? NotFound() : ticket;
   }
 
   [HttpPost]
   public ActionResult<Guid> Post([FromBody] Ticket ticket)
   {
-    _service.Create(ticket);
+    try
+    {
+      _service.Create(ticket);
+    } catch (ArgumentNullException)
+    {
+      NotFound();
+    } catch (Exception)
+    {
+      return StatusCode(500);
+    }
     return CreatedAtAction(nameof(GetOne), new { id = ticket.Id.ToString() }, ticket);
-  }
-
-  [HttpPut]
-  public ActionResult<Guid> Put([FromBody] Ticket ticket)
-  {
-    _service.Update(ticket);
-    return NoContent();
   }
 
   [HttpDelete("{id}")]
   public ActionResult<Guid> Delete([FromRoute] Guid id)
   {
-    _service.Delete(id);
+    try
+    {
+      _service.Delete(id);
+    } catch (ArgumentNullException)
+    {
+      NotFound();
+    } catch (Exception)
+    {
+      return StatusCode(500);
+    }
     return NoContent();
   }
 }

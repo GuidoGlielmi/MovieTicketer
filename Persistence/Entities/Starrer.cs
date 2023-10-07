@@ -6,5 +6,5 @@ public class Starrer : Entity
 
   public required int Age { get; init; }
 
-  public List<Movie> Movies { get; init; } = new();
+  public List<Movie> Movies { get; } = new();
 }

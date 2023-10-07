@@ -11,16 +11,16 @@ public class MovieController : ControllerBase
 {
 
   private readonly ILogger<MovieController> _logger;
-  private readonly MovieService _service;
+  private readonly IUpdatableMovieTicketerService<Movie> _service;
 
-  public MovieController(ILogger<MovieController> logger, MovieService service)
+  public MovieController(ILogger<MovieController> logger, IUpdatableMovieTicketerService<Movie> service)
   {
     _logger = logger;
     _service = service;
   }
 
   [HttpGet]
-  public IEnumerable<Movie> Get()
+  public ActionResult<IEnumerable<Movie>> Get()
   {
     return _service.GetAll();
   }

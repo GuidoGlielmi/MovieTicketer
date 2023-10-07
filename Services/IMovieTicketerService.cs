@@ -7,6 +7,5 @@ public interface IMovieTicketerService<T> where T : Entity
   List<T> GetAll();
   T? Get(Guid id);
   void Create(T entity);
-  void Update(T entity);
   void Delete(Guid id);
 }

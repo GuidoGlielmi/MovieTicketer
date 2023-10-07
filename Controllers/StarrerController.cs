@@ -10,9 +10,9 @@ public class StarrerController : ControllerBase
 {
 
   private readonly ILogger<StarrerController> _logger;
-  private readonly StarrerService _service;
+  private readonly IUpdatableMovieTicketerService<Starrer> _service;
 
-  public StarrerController(ILogger<StarrerController> logger, StarrerService service)
+  public StarrerController(ILogger<StarrerController> logger, IUpdatableMovieTicketerService<Starrer> service)
   {
     _logger = logger;
     _service = service;

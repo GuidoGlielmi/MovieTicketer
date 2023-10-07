@@ -6,11 +6,11 @@ public class Room : Entity
 {
   public new int Id { get; init; }
 
-  public List<MovieShow> MovieShows { get; } = new();
+  public List<Show> Shows { get; } = new();
 
-  public int RowsAmount { get; init; }
+  public required int RowsAmount { get; init; }
 
-  public int ColumnsAmount { get; init; }
+  public required int ColumnsAmount { get; init; }
 
   [NotMapped]
   public int SeatsAmount => RowsAmount * ColumnsAmount;

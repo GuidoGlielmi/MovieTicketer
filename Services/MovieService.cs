@@ -13,33 +13,33 @@ public class MovieService : IMovieTicketerService<Movie>
 
   public List<Movie> GetAll()
   {
-    return _context.Movies.ToList();
+    return _context.Movie.ToList();
   }
 
   public Movie? Get(Guid id)
   {
-    return _context.Movies.Find(id);
+    return _context.Movie.Find(id);
   }
 
 
   public void Create(Movie movie)
   {
-    _context.Movies.Add(movie);
+    _context.Movie.Add(movie);
     _context.SaveChanges();
   }
 
   public void Delete(Guid id)
   {
-    var movie = _context.Movies.Find(id);
+    var movie = _context.Movie.Find(id);
     if (movie is null)
       return;
 
-    _context.Movies.Remove(movie);
+    _context.Movie.Remove(movie);
     _context.SaveChanges();
   }
 
   public void Update(Movie movie)
   {
-    _context.Movies.Update(movie);
+    _context.Movie.Update(movie);
   }
 }

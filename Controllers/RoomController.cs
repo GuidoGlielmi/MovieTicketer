@@ -9,9 +9,9 @@ namespace MovieTicketer.Controllers;
 public class RoomController : ControllerBase
 {
   private readonly ILogger<RoomController> _logger;
-  private readonly RoomService _service;
+  private readonly IUpdatableMovieTicketerService<Room> _service;
 
-  public RoomController(ILogger<RoomController> logger, RoomService service)
+  public RoomController(ILogger<RoomController> logger, IUpdatableMovieTicketerService<Room> service)
   {
     _logger = logger;
     _service = service;

@@ -1,5 +1,6 @@
 
 using MovieTicketer.Persistence;
+using MovieTicketer.Persistence.Seeds;
 
 namespace MovieTicketer;
 
@@ -10,8 +11,7 @@ public class Program
     var builder = WebApplication.CreateBuilder(args);
 
     // Add services to the container.
-    builder.Services.AddInfrastructureServices(builder.Configuration);
-
+    builder.Services.AddInfrastructureServices();
 
     builder.Services.AddControllers();
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -23,6 +23,10 @@ public class Program
     // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
     {
+      if (Environment.GetEnvironmentVariable("SEED") == "TRUE")
+      {
+        builder.Services.SeedDatabase();
+      };
       app.UseSwagger();
       app.UseSwaggerUI();
     }

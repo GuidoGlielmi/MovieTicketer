@@ -13,33 +13,33 @@ public class RoomService : IMovieTicketerService<Room>
 
   public List<Room> GetAll()
   {
-    return _context.Rooms.ToList();
+    return _context.Room.ToList();
   }
 
   public Room? Get(Guid id)
   {
-    return _context.Rooms.Find(id);
+    return _context.Room.Find(id);
   }
 
 
   public void Create(Room room)
   {
-    _context.Rooms.Add(room);
+    _context.Room.Add(room);
     _context.SaveChanges();
   }
 
   public void Delete(Guid id)
   {
-    var room = _context.Rooms.Find(id);
+    var room = _context.Room.Find(id);
     if (room is null)
       return;
 
-    _context.Rooms.Remove(room);
+    _context.Room.Remove(room);
     _context.SaveChanges();
   }
 
   public void Update(Room room)
   {
-    _context.Rooms.Update(room);
+    _context.Room.Update(room);
   }
 }

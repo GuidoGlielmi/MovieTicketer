@@ -13,33 +13,33 @@ public class StarrerService : IMovieTicketerService<Starrer>
 
   public List<Starrer> GetAll()
   {
-    return _context.Starrers.ToList();
+    return _context.Starrer.ToList();
   }
 
   public Starrer? Get(Guid id)
   {
-    return _context.Starrers.Find(id);
+    return _context.Starrer.Find(id);
   }
 
 
   public void Create(Starrer starrer)
   {
-    _context.Starrers.Add(starrer);
+    _context.Starrer.Add(starrer);
     _context.SaveChanges();
   }
 
   public void Delete(Guid id)
   {
-    var starrer = _context.Starrers.Find(id);
+    var starrer = _context.Starrer.Find(id);
     if (starrer is null)
       return;
 
-    _context.Starrers.Remove(starrer);
+    _context.Starrer.Remove(starrer);
     _context.SaveChanges();
   }
 
   public void Update(Starrer starrer)
   {
-    _context.Starrers.Update(starrer);
+    _context.Starrer.Update(starrer);
   }
 }

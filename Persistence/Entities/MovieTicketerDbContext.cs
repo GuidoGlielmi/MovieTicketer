@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using System.Reflection;
 
 namespace MovieTicketer.Persistence.Entities;
@@ -13,14 +14,20 @@ public class MovieTicketerDbContext : DbContext, IMovieTicketerDbContext
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
+    //foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypes())
+    //{
+    //  entityType.SetTableName(entityType.GetTableName()!.ToLower());
+    //}
+
     modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
     base.OnModelCreating(modelBuilder);
   }
 
-  public required DbSet<Room> Rooms { get; set; }
-  public required DbSet<MovieShow> MovieShows { get; set; }
-  public required DbSet<Movie> Movies { get; set; }
-  public required DbSet<Ticket> Tickets { get; set; }
-  public required DbSet<Starrer> Starrers { get; set; }
-  public required DbSet<Buyer> Buyers { get; set; }
+  public DbSet<Room> Room { get; set; }
+  public DbSet<Show> Show { get; set; }
+  public DbSet<Movie> Movie { get; set; }
+  public DbSet<Ticket> Ticket { get; set; }
+  public DbSet<Starrer> Starrer { get; set; }
+  public DbSet<Buyer> Buyer { get; set; }
 }

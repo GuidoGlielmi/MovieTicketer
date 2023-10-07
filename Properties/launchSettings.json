@@ -2,7 +2,6 @@
   "profiles": {
     "http": {
       "commandName": "Project",
-      "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
@@ -12,18 +11,18 @@
     },
     "https": {
       "commandName": "Project",
-      "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "OMDB_APIKEY": "c26b3039"
+        "OMDB_APIKEY": "c26b3039",
+        "SEED": "TRUE",
+        "DB_CONNECTION_STRING": "Host=localhost; Database=movieticketer; Username=postgres; Password=jorgedro"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7051;http://localhost:5257"
+      "applicationUrl": "https://localhost:8000;http://localhost:5257"
     },
     "IIS Express": {
       "commandName": "IISExpress",
-      "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

@@ -13,33 +13,33 @@ public class BuyerService : IMovieTicketerService<Buyer>
 
   public List<Buyer> GetAll()
   {
-    return _context.Buyers.ToList();
+    return _context.Buyer.ToList();
   }
 
   public Buyer? Get(Guid id)
   {
-    return _context.Buyers.Find(id);
+    return _context.Buyer.Find(id);
   }
 
 
   public void Create(Buyer buyer)
   {
-    _context.Buyers.Add(buyer);
+    _context.Buyer.Add(buyer);
     _context.SaveChanges();
   }
 
   public void Delete(Guid id)
   {
-    var buyer = _context.Buyers.Find(id);
+    var buyer = _context.Buyer.Find(id);
     if (buyer is null)
       return;
 
-    _context.Buyers.Remove(buyer);
+    _context.Buyer.Remove(buyer);
     _context.SaveChanges();
   }
 
   public void Update(Buyer buyer)
   {
-    _context.Buyers.Update(buyer);
+    _context.Buyer.Update(buyer);
   }
 }

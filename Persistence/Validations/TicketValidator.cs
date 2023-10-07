@@ -8,7 +8,7 @@ public class TicketValidator : AbstractValidator<Ticket>
   const int LetterACharCode = 'a';
   public TicketValidator()
   {
-    RuleFor(t => t.RowIdentifier).LessThanOrEqualTo(t => (char)(LetterACharCode + t.MovieShow.Room.RowsAmount));
-    RuleFor(t => t.ColumnIdentifier).LessThanOrEqualTo(t => t.MovieShow.Room.ColumnsAmount);
+    RuleFor(t => t.RowIdentifier).LessThanOrEqualTo(t => (char)(LetterACharCode + t.Show.Room.RowsAmount));
+    RuleFor(t => t.ColumnIdentifier).LessThanOrEqualTo(t => t.Show.Room.ColumnsAmount);
   }
 }

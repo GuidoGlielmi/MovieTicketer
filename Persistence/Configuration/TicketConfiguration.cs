@@ -8,6 +8,6 @@ public class TicketConfiguration : IEntityTypeConfiguration<Ticket>
 {
   public void Configure(EntityTypeBuilder<Ticket> builder)
   {
-    builder.Property(e => e.Id).ValueGeneratedNever();
+    //builder.Property(e => e.Id).ValueGeneratedNever();
   }
 }
