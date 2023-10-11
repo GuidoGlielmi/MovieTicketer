@@ -29,7 +29,6 @@ public static class DependencyInjection
 
     services.AddDbContext<MovieTicketerDbContext>((provider, options) =>
     {
-      options.AddInterceptors(provider.GetServices<ISaveChangesInterceptor>());
       options.UseNpgsql(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")).UseSnakeCaseNamingConvention();
     });
   }

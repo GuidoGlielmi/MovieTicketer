@@ -28,12 +28,8 @@ public class BuyerService : IMovieTicketerService<Buyer>
     _context.SaveChanges();
   }
 
-  public void Delete(Guid id)
+  public void Delete(Buyer buyer)
   {
-    var buyer = _context.Buyer.Find(id);
-    if (buyer is null)
-      return;
-
     _context.Buyer.Remove(buyer);
     _context.SaveChanges();
   }
@@ -41,5 +37,10 @@ public class BuyerService : IMovieTicketerService<Buyer>
   public void Update(Buyer buyer)
   {
     _context.Buyer.Update(buyer);
+  }
+
+  public bool Exists(Guid id)
+  {
+    return _context.Buyer.Any(t => t.Id == id);
   }
 }

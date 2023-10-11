@@ -4,37 +4,40 @@ using MovieTicketer.Persistence.Entities;
 namespace MovieTicketer.Persistence.Seeds;
 public static class Seed
 {
-  public static void SeedDatabase(this IServiceCollection services)
+  public static void SeedDatabase(IServiceCollection services)
   {
     using var context = services.BuildServiceProvider().GetService<MovieTicketerDbContext>()!;
     using var transaction = context.Database.BeginTransaction();
     try
     {
-      var starOne = new Starrer()
+      var starOne = new Actor()
       {
         Age = 20,
         Name = "John",
+        ActingRole = ActingRole.Co_Star
       };
-      var starTwo = new Starrer()
+      var starTwo = new Actor()
       {
         Age = 20,
         Name = "John",
+        ActingRole = ActingRole.Guest_Star
       };
 
       var movie = new Movie
       {
-        Categories = new() { MovieCategory.Action, MovieCategory.Comedy },
         Duration = new TimeSpan(2, 30, 0),
         Rate = MovieRate.G,
         Title = "Tuvieja",
         Starrers = new() { starOne, starTwo },
         Format = MovieFormat.Standard,
       };
+      movie.AddCategory(MovieCategory.Action, MovieCategory.Comedy);
 
       var room = new Room
       {
-        RowsAmount = 20,
-        ColumnsAmount = 20,
+        RoomNumber = 0,
+        RowsCount = 20,
+        ColumnsCount = 20,
       };
 
       var show = new Show
@@ -49,7 +52,7 @@ public static class Seed
       var buyer = new Buyer
       {
         Age = 20,
-        DNI = "37700560",
+        Dni = "37700560",
         FirstName = "asd",
         LastName = "asd",
       };

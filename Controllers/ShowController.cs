@@ -9,44 +9,52 @@ namespace MovieTicketer.Controllers;
 public class ShowController : ControllerBase
 {
   private readonly ILogger<ShowController> _logger;
-  private readonly IUpdatableMovieTicketerService<Show> _service;
+  private readonly IUpdatableMovieTicketerService<Show> _showService;
 
-  public ShowController(ILogger<ShowController> logger, IUpdatableMovieTicketerService<Show> service)
+  public ShowController(ILogger<ShowController> logger, IUpdatableMovieTicketerService<Show> showService)
   {
     _logger = logger;
-    _service = service;
+    _showService = showService;
   }
 
   [HttpGet]
   public IEnumerable<Show> Get()
   {
-    return _service.GetAll();
+    return _showService.GetAll();
   }
 
   [HttpGet("{id}")]
   public ActionResult<Show?> GetOne([FromRoute] Guid id)
   {
-    return _service.Get(id);
+    return _showService.Get(id);
   }
 
   [HttpPost]
   public ActionResult<Guid> Post([FromBody] Show show)
   {
-    _service.Create(show);
+    _showService.Create(show);
     return CreatedAtAction(nameof(GetOne), new { id = show.Id.ToString() }, show);
   }
 
   [HttpPut]
   public ActionResult<Guid> Put([FromBody] Show show)
   {
-    _service.Update(show);
-    return NoContent();
+    var foundShow = _showService.Get(show.Id);
+    if (foundShow is null)
+      return NotFound();
+    _showService.Update(show);
+    return Ok();
   }
 
-  [HttpDelete("{id}")]
-  public ActionResult<Guid> Delete([FromRoute] Guid id)
+  [HttpDelete]
+  public ActionResult<Guid> Delete([FromBody] Guid id)
   {
-    _service.Delete(id);
-    return NoContent();
+    var foundShow = _showService.Get(id);
+
+    if (foundShow is null)
+      return NotFound();
+
+    _showService.Delete(foundShow);
+    return Ok();
   }
 }

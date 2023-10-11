@@ -5,13 +5,9 @@ namespace MovieTicketer.Persistence.Entities;
 
 public class Ticket : Entity
 {
-  public Guid ShowId { get; init; }
+  public required Show Show { get; init; }
 
-  public required virtual Show Show { get; init; }
-
-  public Guid BuyerId { get; init; }
-
-  public required virtual Buyer Buyer { get; init; }
+  public required Buyer Buyer { get; init; }
 
   public required char RowIdentifier { get; init; }
 

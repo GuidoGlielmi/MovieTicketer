@@ -24,15 +24,17 @@ public class TicketService : IMovieTicketerService<Ticket>
 
   public void Create(Ticket ticket)
   {
-    var show = _context.Show.First(s => s.Id == ticket.ShowId);
-    show.AddTicket(ticket);
+    _context.Ticket.Add(ticket);
     _context.SaveChanges();
   }
 
-  public void Delete(Guid id)
+  public void Delete(Ticket ticket)
   {
-    var ticket = _context.Ticket.First(t => t.Id == id);
     _context.Ticket.Remove(ticket);
     _context.SaveChanges();
+  }
+  public bool Exists(Guid id)
+  {
+    return _context.Ticket.Any(t => t.Id == id);
   }
 }

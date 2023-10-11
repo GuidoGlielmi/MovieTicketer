@@ -4,14 +4,14 @@ namespace MovieTicketer.Persistence.Entities;
 
 public class Room : Entity
 {
-  public new int Id { get; init; }
+  public required int RoomNumber { get; init; }
 
   public List<Show> Shows { get; } = new();
 
-  public required int RowsAmount { get; init; }
+  public required int RowsCount { get; init; }
 
-  public required int ColumnsAmount { get; init; }
+  public required int ColumnsCount { get; init; }
 
   [NotMapped]
-  public int SeatsAmount => RowsAmount * ColumnsAmount;
+  public int SeatsCount => RowsCount * ColumnsCount;
 }

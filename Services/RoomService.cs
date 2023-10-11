@@ -28,12 +28,8 @@ public class RoomService : IMovieTicketerService<Room>
     _context.SaveChanges();
   }
 
-  public void Delete(Guid id)
+  public void Delete(Room room)
   {
-    var room = _context.Room.Find(id);
-    if (room is null)
-      return;
-
     _context.Room.Remove(room);
     _context.SaveChanges();
   }
@@ -41,5 +37,10 @@ public class RoomService : IMovieTicketerService<Room>
   public void Update(Room room)
   {
     _context.Room.Update(room);
+  }
+
+  public bool Exists(Guid id)
+  {
+    return _context.Room.Any(t => t.Id == id);
   }
 }

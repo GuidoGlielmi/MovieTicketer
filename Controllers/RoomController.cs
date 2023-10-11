@@ -9,44 +9,52 @@ namespace MovieTicketer.Controllers;
 public class RoomController : ControllerBase
 {
   private readonly ILogger<RoomController> _logger;
-  private readonly IUpdatableMovieTicketerService<Room> _service;
+  private readonly IUpdatableMovieTicketerService<Room> _roomService;
 
-  public RoomController(ILogger<RoomController> logger, IUpdatableMovieTicketerService<Room> service)
+  public RoomController(ILogger<RoomController> logger, IUpdatableMovieTicketerService<Room> movieService)
   {
     _logger = logger;
-    _service = service;
+    _roomService = movieService;
   }
 
   [HttpGet]
   public IEnumerable<Room> Get()
   {
-    return _service.GetAll();
+    return _roomService.GetAll();
   }
 
   [HttpGet("{id}")]
   public ActionResult<Room?> GetOne([FromRoute] Guid id)
   {
-    return _service.Get(id);
+    return _roomService.Get(id);
   }
 
   [HttpPost]
   public ActionResult<Guid> Post([FromBody] Room room)
   {
-    _service.Create(room);
+    _roomService.Create(room);
     return CreatedAtAction(nameof(GetOne), new { id = room.Id.ToString() }, room);
   }
 
   [HttpPut]
   public ActionResult<Guid> Put([FromBody] Room room)
   {
-    _service.Update(room);
-    return NoContent();
+    var foundRoom = _roomService.Get(room.Id);
+    if (foundRoom is null)
+      return NotFound();
+    _roomService.Update(room);
+    return Ok();
   }
 
-  [HttpDelete("{id}")]
-  public ActionResult<Guid> Delete([FromRoute] Guid id)
+  [HttpDelete]
+  public ActionResult<Guid> Delete([FromBody] Guid id)
   {
-    _service.Delete(id);
-    return NoContent();
+    var foundRoom = _roomService.Get(id);
+
+    if (foundRoom is null)
+      return NotFound();
+
+    _roomService.Delete(foundRoom);
+    return Ok();
   }
 }

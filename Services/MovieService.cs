@@ -28,12 +28,8 @@ public class MovieService : IMovieTicketerService<Movie>
     _context.SaveChanges();
   }
 
-  public void Delete(Guid id)
+  public void Delete(Movie movie)
   {
-    var movie = _context.Movie.Find(id);
-    if (movie is null)
-      return;
-
     _context.Movie.Remove(movie);
     _context.SaveChanges();
   }
@@ -41,5 +37,10 @@ public class MovieService : IMovieTicketerService<Movie>
   public void Update(Movie movie)
   {
     _context.Movie.Update(movie);
+  }
+
+  public bool Exists(Guid id)
+  {
+    return _context.Movie.Any(t => t.Id == id);
   }
 }

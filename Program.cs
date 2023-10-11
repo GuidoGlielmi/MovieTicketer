@@ -23,10 +23,6 @@ public class Program
     // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
     {
-      if (Environment.GetEnvironmentVariable("SEED") == "TRUE")
-      {
-        builder.Services.SeedDatabase();
-      };
       app.UseSwagger();
       app.UseSwaggerUI();
     }

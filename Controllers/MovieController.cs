@@ -9,47 +9,54 @@ namespace MovieTicketer.Controllers;
 [Route("[controller]")]
 public class MovieController : ControllerBase
 {
-
   private readonly ILogger<MovieController> _logger;
-  private readonly IUpdatableMovieTicketerService<Movie> _service;
+  private readonly IUpdatableMovieTicketerService<Movie> _movieService;
 
-  public MovieController(ILogger<MovieController> logger, IUpdatableMovieTicketerService<Movie> service)
+  public MovieController(ILogger<MovieController> logger, IUpdatableMovieTicketerService<Movie> movieService)
   {
     _logger = logger;
-    _service = service;
+    _movieService = movieService;
   }
 
   [HttpGet]
   public ActionResult<IEnumerable<Movie>> Get()
   {
-    return _service.GetAll();
+    return _movieService.GetAll();
   }
 
   [HttpGet("{id}")]
   public ActionResult<Movie?> GetOne([FromRoute] Guid id)
   {
-    return _service.Get(id);
+    return _movieService.Get(id);
   }
 
   [HttpPost]
   public ActionResult<Guid> Post([FromBody] Movie movie)
   {
-    _service.Create(movie);
+    _movieService.Create(movie);
     return CreatedAtAction(nameof(GetOne), new { id = movie.Id.ToString() }, movie);
   }
 
   [HttpPut]
   public ActionResult<Guid> Put([FromBody] Movie movie)
   {
-    _service.Update(movie);
-    return NoContent();
+    var foundMovie = _movieService.Get(movie.Id);
+    if (foundMovie is null)
+      return NotFound();
+    _movieService.Update(movie);
+    return Ok();
   }
 
-  [HttpDelete("{id}")]
-  public ActionResult<Guid> Delete([FromRoute] Guid id)
+  [HttpDelete]
+  public ActionResult<Guid> Delete([FromBody] Guid id)
   {
-    _service.Delete(id);
-    return NoContent();
+    var foundMovie = _movieService.Get(id);
+
+    if (foundMovie is null)
+      return NotFound();
+
+    _movieService.Delete(foundMovie);
+    return Ok();
   }
 }
 

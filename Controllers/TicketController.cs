@@ -9,56 +9,48 @@ public class TicketController : ControllerBase
 {
 
   private readonly ILogger<TicketController> _logger;
-  private readonly IMovieTicketerService<Ticket> _service;
+  private readonly IMovieTicketerService<Ticket> _ticketService;
+  private readonly IMovieTicketerService<Show> _showService;
 
-  public TicketController(ILogger<TicketController> logger, IMovieTicketerService<Ticket> service)
+  public TicketController(ILogger<TicketController> logger, IMovieTicketerService<Ticket> ticketService, IMovieTicketerService<Show> showService)
   {
     _logger = logger;
-    _service = service;
+    _ticketService = ticketService;
+    _showService = showService;
   }
 
   [HttpGet]
   public IEnumerable<Ticket> Get()
   {
-    return _service.GetAll();
+    return _ticketService.GetAll();
   }
 
   [HttpGet("{id}")]
   public ActionResult<Ticket?> GetOne([FromRoute] Guid id)
   {
-    var ticket = _service.Get(id);
-    return ticket is null ? NotFound() : ticket;
+    var ticket = _ticketService.Get(id);
+    return ticket is null ? NotFound() : Ok(ticket);
   }
 
   [HttpPost]
   public ActionResult<Guid> Post([FromBody] Ticket ticket)
   {
-    try
-    {
-      _service.Create(ticket);
-    } catch (ArgumentNullException)
-    {
-      NotFound();
-    } catch (Exception)
-    {
-      return StatusCode(500);
-    }
+    if (!_showService.Exists(ticket.Show.Id))
+      return NotFound();
+
+    _ticketService.Create(ticket);
     return CreatedAtAction(nameof(GetOne), new { id = ticket.Id.ToString() }, ticket);
   }
 
-  [HttpDelete("{id}")]
-  public ActionResult<Guid> Delete([FromRoute] Guid id)
+  [HttpDelete]
+  public ActionResult<Guid> Delete([FromBody] Guid id)
   {
-    try
-    {
-      _service.Delete(id);
-    } catch (ArgumentNullException)
-    {
-      NotFound();
-    } catch (Exception)
-    {
-      return StatusCode(500);
-    }
-    return NoContent();
+    var foundTicket = _ticketService.Get(id);
+
+    if (foundTicket is null)
+      return NotFound();
+
+    _ticketService.Delete(foundTicket);
+    return Ok();
   }
 }

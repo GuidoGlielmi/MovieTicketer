@@ -26,7 +26,7 @@ public class ShowService : IUpdatableMovieTicketerService<Show>
 
   public void Create(Show show)
   {
-    var roomShows = GetRoomShows(show.RoomId);
+    var roomShows = GetRoomShows(show.Room.Id);
     CheckTimeRangeAvailability(show, roomShows);
     DeleteStartedShows(roomShows);
 
@@ -34,12 +34,8 @@ public class ShowService : IUpdatableMovieTicketerService<Show>
     _context.SaveChanges();
   }
 
-  public void Delete(Guid id)
+  public void Delete(Show show)
   {
-    var show = _context.Show.Find(id);
-    if (show is null)
-      return;
-
     _context.Show.Remove(show);
     _context.SaveChanges();
   }
@@ -49,7 +45,12 @@ public class ShowService : IUpdatableMovieTicketerService<Show>
     _context.Show.Update(show);
   }
 
-  private List<Show> GetRoomShows(int roomId)
+  public bool Exists(Guid id)
+  {
+    return _context.Room.Any(t => t.Id == id);
+  }
+
+  private List<Show> GetRoomShows(Guid roomId)
   {
     return _context.Room.First(r => r.Id == roomId).Shows;
   }

@@ -1,15 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using MovieTicketer.Persistence.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace MovieTicketer.Persistence.Interceptors;
 
-public class SetTicketIdSaveChangeInterceptor : SaveChangesInterceptor
+public class ValidateEntitiesSaveChangeInterceptor : SaveChangesInterceptor
 {
   public override InterceptionResult<int> SavingChanges(DbContextEventData eventData,
       InterceptionResult<int> result)
   {
-    UpdateEntities(eventData.Context);
+    ValidateEntities(eventData.Context);
 
     return base.SavingChanges(eventData, result);
   }
@@ -18,21 +18,25 @@ public class SetTicketIdSaveChangeInterceptor : SaveChangesInterceptor
       InterceptionResult<int> result,
       CancellationToken cancellationToken = default)
   {
-    UpdateEntities(eventData.Context);
+    ValidateEntities(eventData.Context);
 
     return base.SavingChangesAsync(eventData, result, cancellationToken);
   }
 
-  private static void UpdateEntities(DbContext? context)
+  private static void ValidateEntities(DbContext? context)
   {
     if (context is null)
       return;
-    //foreach (var entry in context.ChangeTracker.Entries<Ticket>())
-    //{
-    //  if (entry.State == EntityState.Added)
-    //  {
-    //    entry.Property<string>("Id").CurrentValue = $"{entry.Entity.RowIdentifier}{entry.Entity.ColumnIdentifier}{entry.Entity.Show.RoomId}";
-    //  }
-    //}
+
+    context.ChangeTracker
+    .Entries()
+    .Where(e => e.State is EntityState.Added or EntityState.Modified)
+    .Select(e => e.Entity)
+    .ToList()
+    .ForEach(entity =>
+    {
+      var validationContext = new ValidationContext(entity);
+      Validator.ValidateObject(entity, validationContext, validateAllProperties: true);
+    });
   }
 }

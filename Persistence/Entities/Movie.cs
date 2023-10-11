@@ -1,20 +1,45 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MovieTicketer.Persistence.Entities;
 
 public class Movie : Entity
 {
-  public required string Title { get; init; }
+  private static readonly Dictionary<MovieFormat, float> _formatSurcharges = new()
+  {
+    { MovieFormat.Standard, 0 },
+    { MovieFormat.Imax, (float)0.2 },
+    { MovieFormat.Three_D, (float)0.3 },
+  };
+
+  private readonly List<MovieCategory> _categories = new();
 
   public required MovieFormat Format { get; init; }
 
-  public required List<MovieCategory> Categories { get; init; }
+  public required string Title { get; init; }
 
-  public required MovieRate Rate { get; set; }
+  [MinLength(1)]
+  public IReadOnlyList<MovieCategory> Categories => _categories.AsReadOnly();
+
+  public required MovieRate Rate { get; init; }
 
   public required TimeSpan Duration { get; init; }
 
-  public required List<Starrer> Starrers { get; init; }
+  public required List<Actor> Starrers { get; init; }
+
+  [NotMapped]
+  public float FormatSurcharge => _formatSurcharges[Format];
+
+  public void AddCategory(params MovieCategory[] category)
+  {
+    _categories.AddRange(category.ToList());
+  }
+
+  public void RemoveCategory(MovieCategory category)
+  {
+    _categories.Remove(category);
+  }
 }
 
 public enum MovieCategory
@@ -39,8 +64,8 @@ public enum MovieRate
 
 public enum MovieFormat
 {
-  Standard = 0,
-  IMAX = 20,
+  Standard,
+  Imax,
   [Description("3D")]
-  THREE_D = 30
+  Three_D
 };

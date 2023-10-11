@@ -6,7 +6,7 @@ public class Buyer : Entity
 
   public required string LastName { get; init; }
 
-  public required string DNI { get; init; }
+  public required string Dni { get; init; }
 
   public required int Age { get; init; }
 }
