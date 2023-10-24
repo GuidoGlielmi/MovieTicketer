@@ -28,6 +28,12 @@ public class TicketService : IMovieTicketerService<Ticket>
     _context.SaveChanges();
   }
 
+  public void Create(Ticket[] tickets)
+  {
+    _context.Ticket.AddRange(tickets);
+    _context.SaveChanges();
+  }
+
   public void Delete(Ticket ticket)
   {
     _context.Ticket.Remove(ticket);

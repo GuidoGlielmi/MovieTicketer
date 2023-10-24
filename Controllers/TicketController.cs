@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MovieTicketer.Persistence.Entities;
 using MovieTicketer.Services;
+using System.Linq;
 
 namespace MovieTicketer.Controllers;
 [ApiController]
@@ -33,13 +34,26 @@ public class TicketController : ControllerBase
   }
 
   [HttpPost]
-  public ActionResult<Guid> Post([FromBody] Ticket ticket)
+  public ActionResult<Guid> Post([FromBody] Ticket[] tickets)
   {
-    if (!_showService.Exists(ticket.Show.Id))
+    if (tickets.Any(t => t.Show.Id != tickets[0].Show.Id))
+      return BadRequest();
+
+    var show = _showService.Get(tickets[0].Show.Id);
+    if (show == null)
       return NotFound();
 
-    _ticketService.Create(ticket);
-    return CreatedAtAction(nameof(GetOne), new { id = ticket.Id.ToString() }, ticket);
+    var occupiedSeats = tickets.Where(t => !show.AvailableSeats[(t.RowIdentifier, t.ColumnIdentifier)]);
+
+    if (occupiedSeats.Any())
+      return NotFound(occupiedSeats);
+
+    foreach (var t in tickets)
+    {
+      _ticketService.Create(t);
+    }
+
+    return CreatedAtAction(nameof(GetOne), new { ids = tickets.Select(t => t.Id.ToString()) }, tickets);
   }
 
   [HttpDelete]

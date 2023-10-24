@@ -44,7 +44,6 @@ public static class Seed
       {
         Movie = movie,
         Room = room,
-        Price = 3,
         StartTime = DateTime.UtcNow,
         IsPremiering = true,
       };
@@ -61,6 +60,8 @@ public static class Seed
       {
         Show = show,
         Buyer = buyer,
+        IsPremium = true,
+        Price = 3,
         RowIdentifier = 'a',
         ColumnIdentifier = 3
       });

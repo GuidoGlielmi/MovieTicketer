@@ -6,14 +6,6 @@ public class Show : Entity
 {
   private readonly List<Ticket> _tickets = new();
 
-  private float _price;
-  public float BasePrice => _price;
-  public required float Price
-  {
-    get => (float)(_price * ((IsPremiering ? 1.25 : 1) + Movie.FormatSurcharge));
-    set => _price = value;
-  }
-
   public required bool IsPremiering { get; init; }
 
   public required Movie Movie { get; init; }
